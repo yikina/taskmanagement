@@ -1,7 +1,7 @@
 import List from 'components/projectList/List'
 import SearchLine from 'components/projectList/SearchLine'
 import React, { useEffect, useState } from 'react'
-import { cleanObject } from 'utils';
+import { cleanObject, useDebounce, useEffectOnce } from 'utils';
 import qs from 'qs';
 
 
@@ -14,6 +14,8 @@ export default function ProjectListPage() {
         name:'',
         personId:''}
     );
+    //自定义hooks防抖
+    const debounceParam=useDebounce(param,2000);
     
     //options下可选的users列表
     const[users,setUsers]=useState([]);
@@ -23,20 +25,20 @@ export default function ProjectListPage() {
 
     //页面加载时传入数据
     useEffect(()=>{
-        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(param))}`).then(async response=>{
+        fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debounceParam))}`).then(async response=>{
             if(response.ok){
                 setList(await response.json())
             }
         })
-    },[param]);
+    },[debounceParam]);
 
-    useEffect(()=>{
+    useEffectOnce(()=>{
         fetch(`${apiUrl}/users`).then(async response=>{
             if(response.ok){
                 setUsers(await response.json())
             }
         })
-    },[])
+    });
 
 
   return (
