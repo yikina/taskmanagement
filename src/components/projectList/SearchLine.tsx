@@ -1,8 +1,24 @@
 import React from 'react'
+export interface User {
+  id:string;
+  name:string;
+  email:string;
+  title:string;
+  organization:string;
+}
+interface SearchLineProps{
+  users:User[],
+  param:{
+    name: string;
+    personId:string;
+  },
+  setParam:(param:SearchLineProps['param'])=>void;
 
-export default function SearchLine(props) {
+}
+
+export default function SearchLine({users,param,setParam}:SearchLineProps) {
     
-   const{users,param,setParam}=props;
+  
     
 
   return (

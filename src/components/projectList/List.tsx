@@ -1,7 +1,19 @@
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import { User } from './SearchLine';
+interface Project{
+  id:string;
+  name:string;
+  personId:string;
+  pin:boolean;
+  organization:string;
+}
 
-export default function List({ users, list }) {
+interface ListProps{
+  list:Project[],
+  users:User[],
+}
+export default function List({ users, list }: ListProps) {
   
 
   return (

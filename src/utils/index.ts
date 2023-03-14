@@ -1,18 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 //解决val为0,转换为布尔值判断为false问题
-export const isFalsy=(val)=>
+export const isFalsy=(val:unknown)=>
 val === 0 ? false : !val;
 
 
 
 //定义函数判断不让外界传来的对象属性污染到原对象
-export const cleanObject=(obj)=>{
+export const cleanObject=(obj:object)=>{
     const res={...obj};
     //等价于Object.assign({},obj)
     Object.keys(res).forEach((key)=>{
+        //@ts-ignore
         const val=res[key];
         if(isFalsy(val)){
+            //@ts-ignore
             delete res[key]
         }
     })
@@ -21,14 +23,14 @@ export const cleanObject=(obj)=>{
 }
 
 //useEffectOnce——为只需要执行一次的操作忽略掉useEffect后面的[ ]，使得代码更加简洁美观
-export const useEffectOnce=(callback)=>{
+export const useEffectOnce=(callback:()=>void)=>{
     useEffect(()=>{
         callback()
     },[])
 }
 
 //useDebounce()——解决在搜索栏搜索时每输入一个字母都要发送请求的问题，更改为输入完毕并后再发送(内部设置定时器，每次输入新值先清除上一个值的定时器，在设定自己的，直到最后一个值不会被清除，才真正发送请求）
-export const useDebounce=(val,delay)=>{
+export const useDebounce=<V>(val:V,delay?:number)=>{
     const[debounceVal,setDebounceVal]=useState(val);
 
     useEffect(()=>{
