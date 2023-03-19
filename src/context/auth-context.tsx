@@ -1,7 +1,11 @@
 import React, { ReactNode, useState } from "react";
 import * as auth from 'auth-provider';
 import { User } from "components/projectList/SearchLine";
-import { error } from "console";
+interface AuthForm {
+    username: string;
+    password: string;
+
+}
 
 const AuthContext = React.createContext<{
     user:User | null,
@@ -9,13 +13,9 @@ const AuthContext = React.createContext<{
     register:(form:AuthForm) => Promise<void>,
     logout:()=> Promise<void>,
 }|undefined>(undefined);
-AuthContext.displayName = 'AuthContext';
+AuthContext.displayName = "AuthContext";
 
-interface AuthForm {
-    username: string,
-    password: string
 
-}
 
 export const AuthProvider = ({children}:{children:ReactNode}) => {
     const [user, setUser] = useState<User | null>(null);
@@ -24,11 +24,11 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
         auth.login(form).then(setUser);
 
     const register = (form: AuthForm) =>
-        auth.register(form).then(user => setUser(user));
+        auth.register(form).then(setUser);
     
-    const logout=()=>auth.logout().then(user=>setUser(null));
+    const logout=()=>auth.logout().then(()=>setUser(null));
 
-    return <AuthContext.Provider children={children} value={{user,login,register,logout}}></AuthContext.Provider>
+    return <AuthContext.Provider children={children} value={{user,login,register,logout}} />
 
 
 }
