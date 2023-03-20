@@ -1,10 +1,21 @@
 import React, { ReactNode, useState } from "react";
 import * as auth from 'auth-provider';
 import { User } from "components/projectList/SearchLine";
+import { http } from "utils/http";
+import { useEffectOnce } from "utils";
 interface AuthForm {
     username: string;
     password: string;
 
+}
+const bootstrapUser=async()=>{
+    let user=null;
+    const token=auth.getToken();
+    if(token){
+        const data=await http('me',{token})
+        user=data.user
+    }
+    return user;
 }
 
 const AuthContext = React.createContext<{
@@ -14,7 +25,6 @@ const AuthContext = React.createContext<{
     logout:()=> Promise<void>,
 }|undefined>(undefined);
 AuthContext.displayName = "AuthContext";
-
 
 
 export const AuthProvider = ({children}:{children:ReactNode}) => {
@@ -28,10 +38,16 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
     
     const logout=()=>auth.logout().then(()=>setUser(null));
 
+    useEffectOnce(()=>{
+        bootstrapUser().then(setUser)
+    })
+    
     return <AuthContext.Provider children={children} value={{user,login,register,logout}} />
 
 
 }
+
+
 
 export const useAuth=()=>{
     const context=React.useContext(AuthContext);
