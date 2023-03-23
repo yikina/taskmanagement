@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { useAuth } from 'context/auth-context'
 import ProjectListPage from 'pages/ProjectListPage'
 import React from 'react'
@@ -7,7 +8,7 @@ export const AuthenticatedApp=()=>{
 
     return(
         <div>
-            <button onClick={logout}>登出</button>
+            <Button onClick={logout}>登出</Button>
             <ProjectListPage/>
         </div>
     )

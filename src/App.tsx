@@ -1,20 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ProjectListPage from 'pages/ProjectListPage';
 import { useAuth } from 'context/auth-context';
 import { AuthenticatedApp } from 'authenticated-app';
 import UnauthenticatedApp from 'unauthenticated-app';
+import { ConfigProvider } from 'antd';
+import 'antd/dist/reset.css';
+
 
 
 function App() {
+  
   const{user}=useAuth();
   return (
+    <ConfigProvider
+    theme={{
+      token:{
+        colorPrimary:'#0052cc',
+        fontSize:16,
+
+      }
+    }}>
     <div className="App">
-      {user ? <AuthenticatedApp/> : <UnauthenticatedApp/>}
+    
+      
+      {user ? 
+      <AuthenticatedApp/> : <UnauthenticatedApp/>}
       <AuthenticatedApp/>
       
     </div>
+    </ConfigProvider>
+   
   );
 }
 
