@@ -1,7 +1,8 @@
-const CracoAntDesignPlugin = require("craco-antd");
+
 
 module.exports = {
-  plugins: [{ plugin: CracoAntDesignPlugin,
-    
-  }],
+  // ...
+  typescript: {
+    enableTypeChecking: true /* (default value) */,
+  },
 };

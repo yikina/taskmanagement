@@ -1,6 +1,7 @@
 import { useAuth } from 'context/auth-context';
 import React, { FormEvent } from 'react';
 import{Form,Input,Button} from 'antd';
+import { LongButton } from 'unauthenticated-app';
 
 
 
@@ -22,7 +23,7 @@ export default function Register() {
             <Input placeholder={'密码'}type="password" id={"password"}></Input>
             </Form.Item>
         <Form.Item>
-        <Button htmlType={'submit'} type={"primary"}>注册</Button>
+        <LongButton htmlType={'submit'} type={"primary"}>注册</LongButton>
         </Form.Item>
         
 
