@@ -21,12 +21,9 @@ function App() {
       }
     }}>
     <div className="App">
-    
-      
-      {user ? 
-      <AuthenticatedApp/> : <UnauthenticatedApp/>}
+      {/* {user ? 
+      <AuthenticatedApp/> : <UnauthenticatedApp/>} */}
       <AuthenticatedApp/>
-      
     </div>
     </ConfigProvider>
    

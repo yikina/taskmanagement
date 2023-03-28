@@ -4,8 +4,6 @@ import Login from './login'
 
 import styled from '@emotion/styled';
 import logo from 'assets/logo.svg';
-import left from 'assets/left.svg';
-import right from 'assets/right.svg'
 import Register from './register';
 
 export default function UnauthenticatedApp() {
