@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 
-//解决val为0,转换为布尔值判断为false问题
-export const isFalsy=(val:unknown)=>
-val === 0 ? false : !val;
 
-
+export const isVoid=(val:unknown)=>val===undefined
+|| val===null ||val==='';
 
 //定义函数判断不让外界传来的对象属性污染到原对象
-export const cleanObject=(obj:object)=>{
+export const cleanObject=(obj:{[key:string]:unknown})=>{
     const res={...obj};
     //等价于Object.assign({},obj)
     Object.keys(res).forEach((key)=>{
-        //@ts-ignore
         const val=res[key];
-        if(isFalsy(val)){
-            //@ts-ignore
+        if(isVoid(val)){
             delete res[key]
         }
     })
@@ -26,6 +22,7 @@ export const cleanObject=(obj:object)=>{
 export const useEffectOnce=(callback:()=>void)=>{
     useEffect(()=>{
         callback()
+        //eslint-disable-next-line  react-hooks/exhaustive-deps
     },[])
 }
 

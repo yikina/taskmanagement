@@ -22,9 +22,9 @@ export default function UnauthenticatedApp() {
         </Title>
         {isLogin ? <Login/> : <Register/>}
       <Divider/>
-        <a onClick={changeHandle}>{
+        <Button type={"link"} onClick={changeHandle}>{
             isLogin ? '没有账号，点击注册':'已有账号，直接登录'
-        }</a></ShadowCard>
+        }</Button></ShadowCard>
     </Container>
   )
 };

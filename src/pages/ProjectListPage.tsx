@@ -3,6 +3,7 @@ import SearchLine from 'components/projectList/SearchLine'
 import React, { useEffect, useState } from 'react'
 import { cleanObject, useDebounce, useEffectOnce } from 'utils';
 import { useHttp } from 'utils/http';
+import styled from '@emotion/styled'
 
 
 const apiUrl=process.env.REACT_APP_API_URL;
@@ -36,10 +37,15 @@ export default function ProjectListPage() {
 
 
   return (
-    <div>
+    <Container>
+        <h1>项目列表</h1>
         <SearchLine users={users} param={param} setParam={setParam}/>
         <List users={users} list={list}/>
 
-    </div>
+    </Container>
   )
-}
+};
+
+const Container=styled.div`
+    padding:3.2rem
+`
