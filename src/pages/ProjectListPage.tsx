@@ -1,12 +1,13 @@
-import List from 'components/projectList/List'
+import List, { Project } from 'components/projectList/List'
 import SearchLine from 'components/projectList/SearchLine'
 import React, { useEffect, useState } from 'react'
 import { cleanObject, useDebounce, useEffectOnce } from 'utils';
 import { useHttp } from 'utils/http';
 import styled from '@emotion/styled'
+import { useAsync } from 'utils/use-async';
+import { useProjects } from 'utils/project';
+import { useUsers } from 'utils/uses';
 
-
-const apiUrl=process.env.REACT_APP_API_URL;
 
 export default function ProjectListPage() {
     
@@ -18,29 +19,20 @@ export default function ProjectListPage() {
     //自定义hooks防抖
     const debounceParam=useDebounce(param,2000);
     
-    //options下可选的users列表
-    const[users,setUsers]=useState([]);
-
-    const[list,setList]=useState([]);
-
-    const client=useHttp();
-    
-
     //页面加载时传入数据
-    useEffect(()=>{
-        client('project',{data:cleanObject(debounceParam)}).then(setList)
-    },[debounceParam]);
+    const {isLoading,error,data:list}=useProjects(debounceParam)
 
-    useEffectOnce(()=>{
-        client('users').then(setUsers)
-    });
+    const{data:users}=useUsers()
+
+
+    
 
 
   return (
     <Container>
         <h1>项目列表</h1>
-        <SearchLine users={users} param={param} setParam={setParam}/>
-        <List users={users} list={list}/>
+        <SearchLine users={users||[]} param={param} setParam={setParam}/>
+        <List users={users||[]} list={list||[]}/>
 
     </Container>
   )
