@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event'
-import { Table } from 'antd';
+import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react'
 import { User } from './SearchLine';
@@ -12,11 +12,10 @@ export interface Project{
   created:number;
 }
 
-interface ListProps{
-  list:Project[],
+interface ListProps extends TableProps<Project>{
   users:User[],
 }
-export default function List({ users, list }: ListProps) {
+export default function List({ users,...props}: ListProps) {
   return <Table pagination={false} columns={[{
     title:"名称",
     dataIndex:"name",
@@ -38,7 +37,7 @@ export default function List({ users, list }: ListProps) {
         {project.created ? dayjs(project.created).format('YYYY-MM-DD'):'无'}
       </span>
     }
- },]} dataSource={list} />
+ },]} {...props} />
   
 
   

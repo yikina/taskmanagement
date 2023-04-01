@@ -7,6 +7,7 @@ import styled from '@emotion/styled'
 import { useAsync } from 'utils/use-async';
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/uses';
+import { Typography } from 'antd';
 
 
 export default function ProjectListPage() {
@@ -32,7 +33,8 @@ export default function ProjectListPage() {
     <Container>
         <h1>项目列表</h1>
         <SearchLine users={users||[]} param={param} setParam={setParam}/>
-        <List users={users||[]} list={list||[]}/>
+        {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null}
+        <List loading={isLoading} users={users||[]} dataSource={list||[]}/>
 
     </Container>
   )

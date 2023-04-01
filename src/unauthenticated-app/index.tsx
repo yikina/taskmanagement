@@ -1,4 +1,4 @@
-import { Button, Card, Divider } from 'antd';
+import { Button, Card, Divider, Typography } from 'antd';
 import React, { useState } from 'react'
 import Login from './login'
 
@@ -8,6 +8,7 @@ import Register from './register';
 
 export default function UnauthenticatedApp() {
     const[isLogin,setLogin]=useState(false);
+    const[error,setError]=useState<Error |null>(null);
 
     const changeHandle=()=>{
         setLogin(!isLogin);
@@ -20,7 +21,8 @@ export default function UnauthenticatedApp() {
         <Title>
           {isLogin ? '请登录':'请注册'}
         </Title>
-        {isLogin ? <Login/> : <Register/>}
+        {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>:null}
+        {isLogin ? <Login onError={setError}/> : <Register onError={setError}/>}
       <Divider/>
         <Button type={"link"} onClick={changeHandle}>{
             isLogin ? '没有账号，点击注册':'已有账号，直接登录'
