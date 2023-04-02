@@ -3,6 +3,8 @@ import * as auth from 'auth-provider';
 import { User } from "components/projectList/SearchLine";
 import { http } from "utils/http";
 import { useEffectOnce } from "utils";
+import { useAsync } from "utils/use-async";
+import { FullPageError, FullPageLoading } from "components/projectList/Lib";
 interface AuthForm {
     username: string;
     password: string;
@@ -28,7 +30,7 @@ AuthContext.displayName = "AuthContext";
 
 
 export const AuthProvider = ({children}:{children:ReactNode}) => {
-    const [user, setUser] = useState<User | null>(null);
+    const{data:user,error,isLoading,isIdle,isError,run,setData:setUser}=useAsync<User | null>()
 //setUser等同于user => setUser(user)-point free
     const login = (form: AuthForm) =>
         auth.login(form).then(setUser);
@@ -39,8 +41,14 @@ export const AuthProvider = ({children}:{children:ReactNode}) => {
     const logout=()=>auth.logout().then(()=>setUser(null));
 
     useEffectOnce(()=>{
-        bootstrapUser().then(setUser)
+        run(bootstrapUser())
     })
+    if(isIdle||isLoading){
+        return <FullPageLoading/>
+    }
+    if(isError){
+        return <FullPageError error={error}/>
+    }
     
     return <AuthContext.Provider children={children} value={{user,login,register,logout}} />
 
