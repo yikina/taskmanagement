@@ -9,7 +9,7 @@ static getDerivedStateFromError(error:Error){
     return {error}
 }
 render(){
-    const{error}=this.state;
+    const error=this.state.error;
     const{fallbackRender,children}=this.props;
     if(error){
         return fallbackRender({error})

@@ -4,6 +4,7 @@ import { Row } from 'components/projectList/Lib';
 import { useAuth } from 'context/auth-context'
 import ProjectListPage from 'pages/ProjectListPage'
 import React from 'react'
+import { useDocumentTitle } from 'utils';
 
 
 export const AuthenticatedApp = () => {
@@ -12,7 +13,7 @@ export const AuthenticatedApp = () => {
 const items = [
       { label: '登出', key: 'logout' }, // 菜单项务必填写 key
     ];
-
+useDocumentTitle("项目列表",false);
     return (
         <Container>
             <Header between={true}>

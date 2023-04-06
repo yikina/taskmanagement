@@ -5,6 +5,7 @@ import Login from './login'
 import styled from '@emotion/styled';
 import logo from 'assets/logo.svg';
 import Register from './register';
+import { useDocumentTitle } from 'utils';
 
 export default function UnauthenticatedApp() {
     const[isLogin,setLogin]=useState(false);
@@ -13,6 +14,7 @@ export default function UnauthenticatedApp() {
     const changeHandle=()=>{
         setLogin(!isLogin);
     }
+    useDocumentTitle("请登录或注册")
   return (
     <Container>
    <Header/>
