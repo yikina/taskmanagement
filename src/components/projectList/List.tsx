@@ -2,6 +2,7 @@ import userEvent from '@testing-library/user-event'
 import { Table, TableProps } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { User } from './SearchLine';
 export interface Project{
   id:string;
@@ -18,8 +19,10 @@ interface ListProps extends TableProps<Project>{
 export default function List({ users,...props}: ListProps) {
   return <Table pagination={false} columns={[{
     title:"名称",
-    dataIndex:"name",
-    sorter:(a,b)=>a.name.localeCompare(b.name)
+    sorter:(a,b)=>a.name.localeCompare(b.name),
+    render(value,project){
+      return <Link to={String(project.id)}>{project.name}</Link>
+    }
   },
   {
      title:"部门",

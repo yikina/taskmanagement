@@ -6,7 +6,7 @@ import UnauthenticatedApp from 'unauthenticated-app';
 import { ConfigProvider } from 'antd';
 import 'antd/dist/reset.css';
 import { ErrorBoundary } from 'components/error-boundary';
-import { FullPageError } from 'components/projectList/Lib';
+import { FullPageError } from 'components/Lib';
 
 
 

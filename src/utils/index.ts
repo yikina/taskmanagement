@@ -38,7 +38,7 @@ export const useDebounce=<V>(val:V,delay?:number)=>{
 
     return debounceVal;
 }
-
+//实时更新页面标题
 export const useDocumentTitle=(title:string,keepOnUnmount:boolean=true)=>{
    const oldTitle=useRef(document.title).current;
    useEffect(()=>{
@@ -49,3 +49,7 @@ export const useDocumentTitle=(title:string,keepOnUnmount:boolean=true)=>{
     }
     }
    },[keepOnUnmount,title])}
+//重置路由
+export const resetRoute=()=>{
+    window.location.href=window.location.origin;
+}
