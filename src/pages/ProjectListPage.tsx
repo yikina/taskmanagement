@@ -6,16 +6,12 @@ import styled from '@emotion/styled'
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/uses';
 import { Typography } from 'antd';
+import { useUrlQueryParam } from 'utils/url';
 
 
 export default function ProjectListPage() {
-    
-    // 表示输入项目负责人的名字和id
-    const [param,setParam]=useState({
-        name:'',
-        personId:''}
-    );
-    //自定义hooks防抖
+  // 表示输入项目负责人的名字和id
+    const [param,setParam]=useUrlQueryParam(['name','personId']);
     const debounceParam=useDebounce(param,2000);
     
     //页面加载时传入数据
