@@ -1,22 +1,21 @@
 import List, { Project } from 'components/projectList/List'
 import SearchLine from 'components/projectList/SearchLine'
 import React, { useEffect, useState } from 'react'
-import { cleanObject, useDebounce, useEffectOnce } from 'utils';
+import { cleanObject, useDebounce, useDocumentTitle, useEffectOnce } from 'utils';
 import styled from '@emotion/styled'
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/uses';
 import { Typography } from 'antd';
 import { useUrlQueryParam } from 'utils/url';
+import { useProjectsSearchParam } from 'utils/projectSearchParam';
 
 
 export default function ProjectListPage() {
+  useDocumentTitle("项目列表",false);
   // 表示输入项目负责人的名字和id
-    const [param,setParam]=useUrlQueryParam(['name','personId']);
-    const debounceParam=useDebounce(param,2000);
-    
+    const [param,setParam]=useProjectsSearchParam();
     //页面加载时传入数据
-    const {isLoading,error,data:list}=useProjects(debounceParam)
-
+    const {isLoading,error,data:list}=useProjects(useDebounce(param,200));
     const{data:users}=useUsers()
 
 

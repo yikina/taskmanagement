@@ -1,7 +1,9 @@
 import { Form, Input, Select } from 'antd';
 import React from 'react'
+import { Project } from './List';
+import UserSelect from './UserSelect';
 export interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   title: string;
@@ -10,10 +12,7 @@ export interface User {
 }
 interface SearchLineProps {
   users: User[],
-  param: {
-    name: string;
-    personId: string;
-  },
+  param:Partial<Pick<Project,'name'|'personId'>>,
   setParam: (param: SearchLineProps['param']) => void;
 
 }
@@ -34,18 +33,10 @@ export default function SearchLine({ users, param, setParam }: SearchLineProps) 
         })}></Input>
       </Form.Item>
       <Form.Item>
-      <Select value={param.personId} onChange={(value: any) => setParam({
+        <UserSelect defaultOptionName='负责人' value={param.personId} onChange={(value: any) => setParam({
         ...param,
         personId: value
-      })}>
-
-        <Select.Option value={''}>负责人</Select.Option>
-        {
-          users.map(user =>
-            <Select.Option key={user.id} value={user.id}>{user.name}</Select.Option>
-          )
-        }
-      </Select>
+      })}/>
       </Form.Item>
     </Form>
   )
