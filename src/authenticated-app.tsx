@@ -7,10 +7,12 @@ import React from 'react'
 import { resetRoute, useDocumentTitle } from 'utils';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ProjectPage from 'pages/ProjectPage';
+import ProjectModal from 'components/projectList/ProjectModal';
+import ProjectPopover from 'components/projectList/ProjectPopover';
 
 
 export const AuthenticatedApp = () => {
-    
+ const[projectModalOpen,setProjectModalOpen]=React.useState(false);  
 
 
 useDocumentTitle("项目列表",false);
@@ -18,38 +20,43 @@ useDocumentTitle("项目列表",false);
         <Container>
           <PageHeader/>
             <Main>
-                <ProjectListPage />
                <Routes>
                 <Route path={'/projects'} element={<ProjectListPage/>} />
                 <Route path={'/projects/:projectId/*'} element={<ProjectPage/>} />
-                <Navigate to={'/projects'}/>
+                <Route path={"*"} element={<Navigate to={"/projects"} />} />
                </Routes>
             </Main>
+            <ProjectModal projectModalOpen={projectModalOpen} onClose={()=>setProjectModalOpen(false)}
+        />
         </Container>
     )
 }
 
 const PageHeader=()=>{
+ 
+  return (
+  <Header between={true}>
+  <HeaderLeft gap={2}>
+    <Button  type={'link'} onClick={resetRoute}>主页</Button>
+    <ProjectPopover/>
+      <h3>用户</h3>
+  </HeaderLeft>
+  <HeaderRight>
+  <User/>
+</HeaderRight>
+</Header>)
+
+}
+const User=()=>{
   const { logout,user} = useAuth();
   const items = [
     { label: '登出', key: 'logout' }, // 菜单项务必填写 key
   ];
-  return (
-  <Header between={true}>
-  <HeaderLeft gap={2}>
-    <Button type={'link'} onClick={resetRoute}>主页</Button>
-      <h3>项目</h3>
-      <h3>用户</h3>
-  </HeaderLeft>
-  <HeaderRight>
-  <Dropdown menu={{items}}>
+ return( <Dropdown menu={{items}}>
     <Button type={"link"} onClick={e=>e.preventDefault()}>
       Hi,{user?.name}
     </Button>
-  </Dropdown>
-</HeaderRight>
-</Header>)
-
+  </Dropdown>)
 }
 
 const HeaderLeft = styled(Row)``
