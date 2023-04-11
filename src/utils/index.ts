@@ -53,3 +53,15 @@ export const useDocumentTitle=(title:string,keepOnUnmount:boolean=true)=>{
 export const resetRoute=()=>{
     window.location.href=window.location.origin;
 }
+
+//阻止在已卸载的组件上调用setState
+export const useMountedRef=()=>{
+    const mountedRef=useRef(false);
+    useEffect(()=>{
+        mountedRef.current=true
+        return ()=>{
+            mountedRef.current=false;
+        }
+    })
+    return mountedRef;
+}

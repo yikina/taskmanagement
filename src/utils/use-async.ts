@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useMountedRef } from "utils";
 
 interface State<D>{
     stat: 'idle'|'loading'|'error'|'success';
@@ -23,40 +24,43 @@ export const useAsync=<D>(initialState?:State<D>,initialConfig?:typeof defaultCo
         ...defaultInitialState,
         ...initialState
     });
+    const mountedRef=useMountedRef();
 
-    const setData=(data:D)=>setState({
+    const setData=useCallback((data:D)=>setState({
         stat:'success',
         data,
         error:null
-    })
+    }),[])
 
-    const setError=(error:Error)=>setState({
+    const setError=useCallback((error:Error)=>setState({
         stat:'error',
         data:null,
         error,
-    })
+    }),[])
 
-    const run=(promise:Promise<D>)=>{
-        if(!promise || !promise.then){
-            throw new Error('请传入Promise数据类型')
+    const run=useCallback(function (promise: Promise<D>) {
+        if (!promise || !promise.then) {
+            throw new Error('请传入Promise数据类型');
         }
-        setState({...state,stat:'loading'})
+        setState(prevstate => ({ ...prevstate, stat: 'loading' }));
         return promise
-        .then(
-            data=>{
-                setData(data)
-                return data
-            })
-        .catch(
-            error=>{
-                setError(error)
-                if(config.throwOnError){
-                    return Promise.reject(error)
+            .then(
+                data => {
+                    if (mountedRef.current) {
+                        setData(data);
+                        return data;
+                    }
+                })
+            .catch(
+                error => {
+                    setError(error);
+                    if (config.throwOnError) {
+                        return Promise.reject(error);
+                    }
+                    return error;
                 }
-                return error;
-            }
-        )
-    }
+            );
+    },[config.throwOnError,mountedRef.current,setData,setError])
     return{
         isIdle:state.stat==='idle',
         isLoading:state.stat==='loading',

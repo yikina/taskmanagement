@@ -11,7 +11,7 @@ export const useProjects=(param?:Partial<Project>)=>{
     //页面加载时传入数据
     useEffect(()=>{
         run(client('project',{data:cleanObject(param||{})}))
-    },[param]);
+    },[param,run]);
 
     return res;
 }
