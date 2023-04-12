@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Button, Dropdown, Menu } from 'antd';
-import { Row } from 'components/Lib';
+import { ButtonNoPadding, Row } from 'components/Lib';
 import { useAuth } from 'context/auth-context'
 import ProjectListPage from 'pages/ProjectListPage'
 import React from 'react'
@@ -18,10 +18,11 @@ export const AuthenticatedApp = () => {
 useDocumentTitle("项目列表",false);
     return (
         <Container>
-          <PageHeader/>
+          <PageHeader 
+          projectButton={<ButtonNoPadding type={"link"} onClick={()=>setProjectModalOpen(true)}>创建项目</ButtonNoPadding>}/>
             <Main>
                <Routes>
-                <Route path={'/projects'} element={<ProjectListPage/>} />
+                <Route path={'/projects'} element={<ProjectListPage  projectButton={<ButtonNoPadding type={"link"} onClick={()=>setProjectModalOpen(true)}>创建项目</ButtonNoPadding>}/>} />
                 <Route path={'/projects/:projectId/*'} element={<ProjectPage/>} />
                 <Route path={"*"} element={<Navigate to={"/projects"} />} />
                </Routes>
@@ -32,13 +33,14 @@ useDocumentTitle("项目列表",false);
     )
 }
 
-const PageHeader=()=>{
+const PageHeader=(props:{projectButton:JSX.Element})=>{
+  
  
   return (
   <Header between={true}>
   <HeaderLeft gap={2}>
-    <Button  type={'link'} onClick={resetRoute}>主页</Button>
-    <ProjectPopover/>
+    <ButtonNoPadding type={'link'} onClick={resetRoute}>主页</ButtonNoPadding>
+    <ProjectPopover {...props}/>
       <h3>用户</h3>
   </HeaderLeft>
   <HeaderRight>

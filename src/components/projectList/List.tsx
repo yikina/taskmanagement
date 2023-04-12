@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event'
-import { Table, TableProps } from 'antd';
+import { Button, Dropdown, MenuProps, Table, TableProps } from 'antd';
+import { ButtonNoPadding } from 'components/Lib';
 import Pin from 'components/Pin';
 import dayjs from 'dayjs';
 import React from 'react'
@@ -17,10 +18,16 @@ export interface Project{
 
 interface ListProps extends TableProps<Project>{
   users:User[],
+  projectButton:JSX.Element;
 }
 export default function List({ users,...props}: ListProps) {
   const {mutate}=useEditProject();
-  const pinProject=(id:number)=>(pin:boolean)=>mutate({id,pin})
+  const pinProject=(id:number)=>(pin:boolean)=>mutate({id,pin});
+  const items:MenuProps['items']=[{
+    key:'1',
+    //待修改
+    // label:({props.projectButton})
+  }]
 
   return <Table pagination={false} columns={[{
     title:<Pin checked={true} disabled={true} />,
@@ -53,7 +60,14 @@ export default function List({ users,...props}: ListProps) {
         {project.created ? dayjs(project.created).format('YYYY-MM-DD'):'无'}
       </span>
     }
- },]} {...props} />
+ },{
+    render(value,project){
+      return <Dropdown menu={{items}} />
+
+      
+    }
+
+ }]} {...props} />
   
 
   

@@ -5,12 +5,13 @@ import { cleanObject, useDebounce, useDocumentTitle, useEffectOnce } from 'utils
 import styled from '@emotion/styled'
 import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/uses';
-import { Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import { useUrlQueryParam } from 'utils/url';
 import { useProjectsSearchParam } from 'utils/projectSearchParam';
+import { Row } from 'components/Lib';
 
 
-export default function ProjectListPage() {
+export default function ProjectListPage(props:{projectButton:JSX.Element}) {
   useDocumentTitle("项目列表",false);
   // 表示输入项目负责人的名字和id
     const [param,setParam]=useProjectsSearchParam();
@@ -24,10 +25,13 @@ export default function ProjectListPage() {
 
   return (
     <Container>
+      <Row between={true}>
         <h1>项目列表</h1>
+        {props.projectButton}
+      </Row>
         <SearchLine users={users||[]} param={param} setParam={setParam}/>
         {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null}
-        <List loading={isLoading} users={users||[]} dataSource={list||[]}/>
+        <List projectButton={props.projectButton} loading={isLoading} users={users||[]} dataSource={list||[]}/>
 
     </Container>
   )
