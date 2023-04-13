@@ -4,7 +4,9 @@ import { ButtonNoPadding } from 'components/Lib';
 import Pin from 'components/Pin';
 import dayjs from 'dayjs';
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { projectListActions } from 'store/api/projectlistApi';
 import { useEditProject } from 'utils/project';
 import { User } from './SearchLine';
 export interface Project{
@@ -18,15 +20,15 @@ export interface Project{
 
 interface ListProps extends TableProps<Project>{
   users:User[],
-  projectButton:JSX.Element;
+  
 }
 export default function List({ users,...props}: ListProps) {
   const {mutate}=useEditProject();
+  const dispatch=useDispatch();
   const pinProject=(id:number)=>(pin:boolean)=>mutate({id,pin});
   const items:MenuProps['items']=[{
     key:'1',
-    //待修改
-    // label:({props.projectButton})
+    label:<ButtonNoPadding onClick={()=>dispatch(projectListActions.openProjectModal())}type={"link"}>编辑</ButtonNoPadding>
   }]
 
   return <Table pagination={false} columns={[{

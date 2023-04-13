@@ -1,11 +1,14 @@
 import { Button, Drawer } from 'antd'
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { projectListActions, selectProjectModalOpen } from 'store/api/projectlistApi';
 
-export default function ProjectModal(props:{projectModalOpen:boolean,onClose:()=>void}) {
-    const{projectModalOpen,onClose}=props;
+export default function ProjectModal() {
+    const dispatch=useDispatch();
+    const projectModalOpen=useSelector(selectProjectModalOpen);
 
-  return <Drawer onClose={onClose} open={projectModalOpen} width={'100%'}>
-  <Button onClick={onClose}>关闭</Button>
+  return <Drawer onClose={()=>dispatch(projectListActions.closeProjectModal())} open={projectModalOpen} width={'100%'}>
+  <Button onClick={()=>dispatch(projectListActions.closeProjectModal())}>关闭</Button>
 
   </Drawer>
 }
