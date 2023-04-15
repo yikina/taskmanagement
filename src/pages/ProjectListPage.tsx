@@ -7,17 +7,18 @@ import { useProjects } from 'utils/project';
 import { useUsers } from 'utils/uses';
 import { Button, Typography } from 'antd';
 import { useUrlQueryParam } from 'utils/url';
-import { useProjectsSearchParam } from 'utils/projectSearchParam';
-import { Row } from 'components/Lib';
+import { useProjectModal, useProjectsSearchParam } from 'utils/projectSearchParam';
+import { ButtonNoPadding, Row } from 'components/Lib';
 
 
-export default function ProjectListPage(props:{projectButton:JSX.Element}) {
+export default function ProjectListPage() {
   useDocumentTitle("项目列表",false);
   // 表示输入项目负责人的名字和id
     const [param,setParam]=useProjectsSearchParam();
     //页面加载时传入数据
     const {isLoading,error,data:list}=useProjects(useDebounce(param,200));
-    const{data:users}=useUsers()
+    const{data:users}=useUsers();
+    const {open}=useProjectModal();
 
 
     
@@ -27,11 +28,11 @@ export default function ProjectListPage(props:{projectButton:JSX.Element}) {
     <Container>
       <Row between={true}>
         <h1>项目列表</h1>
-        {props.projectButton}
+        <ButtonNoPadding onClick={()=>{open()}}type={"link"}>创建项目</ButtonNoPadding>
       </Row>
         <SearchLine users={users||[]} param={param} setParam={setParam}/>
         {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null}
-        <List projectButton={props.projectButton} loading={isLoading} users={users||[]} dataSource={list||[]}/>
+        <List  loading={isLoading} users={users||[]} dataSource={list||[]}/>
 
     </Container>
   )

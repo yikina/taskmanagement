@@ -18,7 +18,7 @@ export interface Project{
 
 interface ListProps extends TableProps<Project>{
   users:User[],
-  projectButton:JSX.Element;
+  
 }
 export default function List({ users,...props}: ListProps) {
   const {mutate}=useEditProject();

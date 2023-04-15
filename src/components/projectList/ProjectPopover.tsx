@@ -3,10 +3,12 @@ import { Button, Divider, List, Popover, Typography } from 'antd'
 import { ButtonNoPadding } from 'components/Lib';
 import React from 'react'
 import { useProjects } from 'utils/project';
+import { useProjectModal } from 'utils/projectSearchParam';
 
-export default function ProjectOpover(props:{projectButton:JSX.Element}) {
+export default function ProjectOpover() {
   const {data:projects,isLoading}=useProjects();
   const pinnedProjects=projects?.filter(project=>project.pin);
+  const{open}=useProjectModal();
 
   const content = <ContentContainer>
     <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
@@ -16,7 +18,7 @@ export default function ProjectOpover(props:{projectButton:JSX.Element}) {
       }
     </List>
     <Divider/>
-    {props.projectButton}
+    <ButtonNoPadding onClick={()=>{open()}}type={"link"}>创建项目</ButtonNoPadding>
   </ContentContainer>
   return (
     <Popover placement={"bottom"} content={content}>

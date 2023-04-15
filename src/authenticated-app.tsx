@@ -12,22 +12,22 @@ import ProjectPopover from 'components/projectList/ProjectPopover';
 
 
 export const AuthenticatedApp = () => {
- const[projectModalOpen,setProjectModalOpen]=React.useState(false);  
+ 
 
 
 useDocumentTitle("项目列表",false);
     return (
         <Container>
           <PageHeader 
-          projectButton={<ButtonNoPadding type={"link"} onClick={()=>setProjectModalOpen(true)}>创建项目</ButtonNoPadding>}/>
+          projectButton={<ButtonNoPadding type={"link"} onClick={()=>{}}>创建项目</ButtonNoPadding>}/>
             <Main>
                <Routes>
-                <Route path={'/projects'} element={<ProjectListPage  projectButton={<ButtonNoPadding type={"link"} onClick={()=>setProjectModalOpen(true)}>创建项目</ButtonNoPadding>}/>} />
+                <Route path={'/projects'} element={<ProjectListPage/>} />
                 <Route path={'/projects/:projectId/*'} element={<ProjectPage/>} />
                 <Route path={"*"} element={<Navigate to={"/projects"} />} />
                </Routes>
             </Main>
-            <ProjectModal projectModalOpen={projectModalOpen} onClose={()=>setProjectModalOpen(false)}
+            <ProjectModal
         />
         </Container>
     )
@@ -40,7 +40,7 @@ const PageHeader=(props:{projectButton:JSX.Element})=>{
   <Header between={true}>
   <HeaderLeft gap={2}>
     <ButtonNoPadding type={'link'} onClick={resetRoute}>主页</ButtonNoPadding>
-    <ProjectPopover {...props}/>
+    <ProjectPopover />
       <h3>用户</h3>
   </HeaderLeft>
   <HeaderRight>
