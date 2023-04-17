@@ -1,12 +1,12 @@
 import userEvent from '@testing-library/user-event'
-import { Button, Dropdown, Menu, MenuProps, Table, TableProps } from 'antd';
+import { Button, Dropdown, Menu, MenuProps, Modal, Table, TableProps } from 'antd';
 import { ButtonNoPadding } from 'components/Lib';
 import Pin from 'components/Pin';
 import dayjs from 'dayjs';
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { useEditProject } from 'utils/project';
-import { useProjectModal } from 'utils/projectSearchParam';
+import { useDeleteProject, useEditProject } from 'utils/project';
+import { useProjectModal, useProjectQueryKey } from 'utils/projectSearchParam';
 import { User } from './SearchLine';
 export interface Project {
   id: number;
@@ -22,10 +22,9 @@ interface ListProps extends TableProps<Project> {
 
 }
 export default function List({ users, ...props }: ListProps) {
-  const { mutate } = useEditProject();
-  const{startEdit}=useProjectModal();
+  const { mutate } = useEditProject(useProjectQueryKey());
   const pinProject = (id: number) => (pin: boolean) => mutate({ id, pin });
-  const editProject=(id:number)=>()=>startEdit(id);
+  
   
 
   return <Table pagination={false} columns={[{
@@ -61,14 +60,7 @@ export default function List({ users, ...props }: ListProps) {
     }
   }, {
     render(value, project) {
-      return <Dropdown overlay={
-        <Menu>
-          <Menu.Item onClick={editProject(project.id)} key={'edit'}>编辑</Menu.Item>
-          <Menu.Item key={'delete'}>删除</Menu.Item>
-
-        </Menu>
-        
-      }  />
+      return <More project={project} />
 
 
     }
@@ -77,4 +69,29 @@ export default function List({ users, ...props }: ListProps) {
 
 
 
+}
+
+const More=({project}:{project:Project})=>{
+  const{startEdit}=useProjectModal();
+  const editProject=(id:number)=>()=>startEdit(id);
+  const{mutate:deleteProject}=useDeleteProject(useProjectQueryKey())
+  const confirmDeleteProject=(id:number)=>{
+    Modal.confirm({
+      title:'您是否确定删除?',
+      content:'点击确定删除',
+      okText:'确定',
+      onOk(){
+        deleteProject({id})
+
+      }
+    })
+  }
+  return <Dropdown overlay={
+    <Menu>
+      <Menu.Item onClick={editProject(project.id)} key={'edit'}>编辑</Menu.Item>
+      <Menu.Item onClick={()=>confirmDeleteProject}key={'delete'}>删除</Menu.Item>
+
+    </Menu>
+    
+  }  />
 }
