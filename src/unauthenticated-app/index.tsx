@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import logo from 'assets/logo.svg';
 import Register from './register';
 import { useDocumentTitle } from 'utils';
+import { ErrorBox } from 'components/Lib';
 
 export default function UnauthenticatedApp() {
     const[isLogin,setLogin]=useState(false);
@@ -23,7 +24,7 @@ export default function UnauthenticatedApp() {
         <Title>
           {isLogin ? '请登录':'请注册'}
         </Title>
-        {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>:null}
+        <ErrorBox error={error}/>
         {isLogin ? <Login onError={setError}/> : <Register onError={setError}/>}
       <Divider/>
         <Button type={"link"} onClick={changeHandle}>{

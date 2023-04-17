@@ -8,7 +8,7 @@ import { useUsers } from 'utils/uses';
 import { Button, Typography } from 'antd';
 import { useUrlQueryParam } from 'utils/url';
 import { useProjectModal, useProjectsSearchParam } from 'utils/projectSearchParam';
-import { ButtonNoPadding, Row } from 'components/Lib';
+import { ButtonNoPadding, ErrorBox, Row } from 'components/Lib';
 
 
 export default function ProjectListPage() {
@@ -31,7 +31,7 @@ export default function ProjectListPage() {
         <ButtonNoPadding onClick={()=>{open()}}type={"link"}>创建项目</ButtonNoPadding>
       </Row>
         <SearchLine users={users||[]} param={param} setParam={setParam}/>
-        {error ? <Typography.Text type={"danger"}>{error.message}</Typography.Text>: null}
+        <ErrorBox error={error}/>
         <List  loading={isLoading} users={users||[]} dataSource={list||[]}/>
 
     </Container>

@@ -1,35 +1,50 @@
 import { Project } from "components/projectList/List";
-import { useEffect } from "react";
-import { cleanObject } from "utils";
+import { useQuery ,useMutation,useQueryClient} from "@tanstack/react-query";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
+import { useProjectsSearchParam } from "./projectSearchParam";
 
 export const useProjects=(param?:Partial<Project>)=>{
     const client=useHttp();
-    const {run,...res}=useAsync<Project[]>();
-
-    //页面加载时传入数据
-    useEffect(()=>{
-        run(client('project',{data:cleanObject(param||{})}))
-    },[param,run]);
-
-    return res;
+    return useQuery<Project[]>(['projects',param],()=>client('projects',{data:param}));
 }
 
 export const useEditProject=()=>{
-    const{run,...asyncResult}=useAsync();
     const client=useHttp();
-    const mutate=(params:Partial<Project>)=>{
-        run(client(`project/${params.id}`,{data:params,method:'PATCH'}))
-    }
-    return{mutate,...asyncResult}
+    const queryClient=useQueryClient();
+    const [searchParams]=useProjectsSearchParam();
+    const queryKey=['projects',searchParams];
+    return useMutation((params:Partial<Project>)=>
+    client('projects/${params.id}',{data:params,method:'PATCH'}),{
+        onSuccess:()=>{queryClient.invalidateQueries(queryKey)},
+        async onMutate(target){
+            
+            const previousValue=queryClient.getQueryData<Project[]>(queryKey);
+            queryClient.setQueryData<Project[]>(queryKey,(old?:Project[])=>{
+                return old?.map(project=>project.id===target.id?{...project,...target}:project)
+            }
+    )
+    return {previousValue}
+
+},onError(error:Error,newValue:Partial<Project>,context:any){
+    queryClient.setQueryData<Project[]>(queryKey,context.previousValue)
+}
+    
+    })
 }
 
 export const useAddProject=()=>{
-    const{run,...asyncResult}=useAsync();
     const client=useHttp();
-    const mutate=(params:Partial<Project>)=>{
-        run(client(`project/${params.id}`,{data:params,method:'POST'}))
-    }
-    return{mutate,...asyncResult}
+    const queryClient=useQueryClient();
+    return useMutation((params:Partial<Project>)=>client('projects',{data:params,method:'POST'}),{
+        onSuccess:()=>{queryClient.invalidateQueries(['projects'])}
+    })
+    
+}
+
+export const useProject=(id?:number)=>{
+    const client=useHttp();
+    return useQuery<Project>(['projects',{id}],()=>client('projects/${id}'),{
+        enabled:!!id
+    })
 }
