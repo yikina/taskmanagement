@@ -12,8 +12,7 @@ export default function ProjectPage() {
     <Routes>
         <Route path={'kanban'} element={<Kanban/>}></Route>
         <Route path={'epic'} element={<Epic/>}></Route>
-        <Navigate to={window.location.pathname+'/kanban'}/>
-        
+        <Route path={"*"} element={<Navigate to={window.location.pathname+'/kanban'} replace={true} />} />  
     </Routes>
     </div>
   )
