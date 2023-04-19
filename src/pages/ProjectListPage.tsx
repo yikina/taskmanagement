@@ -1,4 +1,5 @@
-import List, { Project } from 'components/projectList/List'
+import List from 'components/projectList/List'
+import { Project } from "types/Project";
 import SearchLine from 'components/projectList/SearchLine'
 import React, { useEffect, useState } from 'react'
 import { cleanObject, useDebounce, useDocumentTitle, useEffectOnce } from 'utils';

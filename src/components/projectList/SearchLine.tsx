@@ -1,15 +1,8 @@
 import { Form, Input, Select } from 'antd';
 import React from 'react'
-import { Project } from './List';
+import { Project } from "../../types/Project";
+import { User } from '../../types/User';
 import UserSelect from './UserSelect';
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
-}
 interface SearchLineProps {
   users: User[],
   param:Partial<Pick<Project,'name'|'personId'>>,

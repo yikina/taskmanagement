@@ -1,9 +1,9 @@
-import { Project } from "components/projectList/List";
 import { useQuery ,useMutation,useQueryClient, QueryKey} from "@tanstack/react-query";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";
 import { useProjectsSearchParam } from "./projectSearchParam";
 import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic";
+import { Project } from "types/Project";
 
 export const useProjects=(param?:Partial<Project>)=>{
     const client=useHttp();

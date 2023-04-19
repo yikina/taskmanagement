@@ -1,5 +1,5 @@
 import { QueryKey, useQueryClient } from "@tanstack/react-query";
-import { Project } from "components/projectList/List";
+import { Project } from "types/Project";
 import ProjectListPage from "pages/ProjectListPage";
 
 export const useConfig=(queryKey:QueryKey,callback:(target:any,old?:any[])=>any[]) =>{

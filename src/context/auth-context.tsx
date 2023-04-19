@@ -6,7 +6,7 @@ import { useEffectOnce } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageError, FullPageLoading } from "components/Lib";
 import { useQueryClient } from "@tanstack/react-query";
-import { User } from "components/projectList/SearchLine";
+import { User } from "types/User";
 interface AuthForm {
     username: string;
     password: string;

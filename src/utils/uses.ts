@@ -1,5 +1,6 @@
-import { User } from "components/projectList/SearchLine";
+
 import { useEffect } from "react";
+import { User } from "types/User";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
 import { useAsync } from "./use-async";

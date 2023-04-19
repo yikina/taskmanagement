@@ -1,5 +1,5 @@
 import Epic from 'components/project/Epic'
-import Kanban from 'components/project/Kanban'
+import Kanban from 'pages/Kanban'
 import React from 'react'
 import { Link, Navigate, Route, Routes } from 'react-router-dom'
 

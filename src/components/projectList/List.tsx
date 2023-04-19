@@ -7,16 +7,8 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { useDeleteProject, useEditProject } from 'utils/project';
 import { useProjectModal, useProjectQueryKey } from 'utils/projectSearchParam';
-import { User } from './SearchLine';
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
-}
-
+import { Project } from '../../types/Project';
+import { User } from "../../types/User";
 interface ListProps extends TableProps<Project> {
   users: User[],
 
