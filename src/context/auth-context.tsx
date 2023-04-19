@@ -1,10 +1,12 @@
 import React, { ReactNode, useState } from "react";
 import * as auth from 'auth-provider';
-import { User } from "components/projectList/SearchLine";
+
 import { http } from "utils/http";
 import { useEffectOnce } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageError, FullPageLoading } from "components/Lib";
+import { useQueryClient } from "@tanstack/react-query";
+import { User } from "components/projectList/SearchLine";
 interface AuthForm {
     username: string;
     password: string;
@@ -32,13 +34,18 @@ AuthContext.displayName = "AuthContext";
 export const AuthProvider = ({children}:{children:ReactNode}) => {
     const{data:user,error,isLoading,isIdle,isError,run,setData:setUser}=useAsync<User | null>()
 //setUser等同于user => setUser(user)-point free
+    const queryClient=useQueryClient();
+    
     const login = (form: AuthForm) =>
         auth.login(form).then(setUser);
 
     const register = (form: AuthForm) =>
         auth.register(form).then(setUser);
     
-    const logout=()=>auth.logout().then(()=>setUser(null));
+    const logout=()=>auth.logout().then(()=>{
+        setUser(null);
+        queryClient.clear();
+    });
 
     useEffectOnce(()=>{
         run(bootstrapUser())
