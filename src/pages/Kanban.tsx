@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { ScreenContainer } from 'components/Lib';
 import KanbanColumns from 'components/project/kanban-columns';
+import SearchLine from 'components/project/SearchLine';
 import { useKanbanPrarams, useProjectInurl } from 'components/project/utils';
 import React from 'react'
 import { useDocumentTitle } from 'utils'
@@ -10,18 +12,22 @@ export default function Kanban() {
   const{data:kanbans}=useKanban(useKanbanPrarams());
   const{data:currentProject}=useProjectInurl()
   return (
-    <div>
+    <ScreenContainer>
       <h1>${currentProject?.name}看板列表</h1>
+      <SearchLine/>
+      <ColumnsContainer>
       {kanbans?.map(kanban=>
         <KanbanColumns kanban={kanban} key={kanban.id} />)}
+        </ColumnsContainer>
 
-    </div>
+    </ScreenContainer>
   )
 }
 
-const Container=styled.div`
-  display:flex;
-  flex-direction:column;
-  overflow: hidden;
-  margin-right: 2rem;
+export const ColumnsContainer = styled.div`
+  display: flex;
+  overflow-x: scroll;
+  flex: 1;
 `
+
+

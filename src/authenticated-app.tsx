@@ -79,4 +79,6 @@ const Header = styled(Row)`
 
 const Main = styled.main`
   flex: 1;
+  display: flex;
+  overflow: hidden;
 `;

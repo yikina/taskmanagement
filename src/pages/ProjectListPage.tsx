@@ -9,7 +9,7 @@ import { useUsers } from 'utils/uses';
 import { Button, Typography } from 'antd';
 import { useUrlQueryParam } from 'utils/url';
 import { useProjectModal, useProjectsSearchParam } from 'utils/projectSearchParam';
-import { ButtonNoPadding, ErrorBox, Row } from 'components/Lib';
+import { ButtonNoPadding, ErrorBox, Row, ScreenContainer } from 'components/Lib';
 
 
 export default function ProjectListPage() {
@@ -26,7 +26,7 @@ export default function ProjectListPage() {
 
 
   return (
-    <Container>
+    <ScreenContainer>
       <Row between={true}>
         <h1>项目列表</h1>
         <ButtonNoPadding onClick={()=>{open()}}type={"link"}>创建项目</ButtonNoPadding>
@@ -35,10 +35,8 @@ export default function ProjectListPage() {
         <ErrorBox error={error}/>
         <List  loading={isLoading} users={users||[]} dataSource={list||[]}/>
 
-    </Container>
+    </ScreenContainer>
   )
 };
 
-const Container=styled.div`
-    padding:3.2rem
-`
+
