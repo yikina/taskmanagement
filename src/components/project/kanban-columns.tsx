@@ -2,7 +2,7 @@ import React from 'react'
 import { Kanban } from 'types/kanban'
 import { useTask } from 'utils/task'
 import { useTaskTypes } from 'utils/task-type';
-import { useTasksSearchParams } from './utils';
+import { useTasksModal, useTasksSearchParams } from './utils';
 import taskIcon from 'assets/task.svg';
 import bugIcon from 'assets/bug.svg';
 import styled from '@emotion/styled';
@@ -12,6 +12,8 @@ import CreateTask from './CreateTask';
 export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
   const { data: allTasks } = useTask(useTasksSearchParams());
   const tasks = allTasks?.filter(task => task.kanbanId === kanban.id);
+
+  const{startEdit}=useTasksModal()
   //待处理svg图片问题
   // const TaskTypeIcon = ({ id }: { id: number }) => {
   //   const { data } = useTaskTypes();
@@ -26,7 +28,7 @@ export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
       <h3>{kanban.name}</h3>
       <TaskContainer>
       {
-        tasks?.map(task => <Card style={{marginBottom:'0.5rem'}} key={task.id}>
+        tasks?.map(task => <Card onClick={()=>startEdit(task.id)} style={{marginBottom:'0.5rem',cursor:'pointer'}} key={task.id}>
           {/* <TaskTypeIcon id={task.typeId} /> */}
           <div>{task.name}</div></Card>)
       }

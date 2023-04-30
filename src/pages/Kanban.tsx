@@ -4,6 +4,7 @@ import { ScreenContainer } from 'components/Lib';
 import CreateKanban from 'components/project/CreateKanban';
 import KanbanColumns from 'components/project/kanban-columns';
 import SearchLine from 'components/project/SearchLine';
+import TaskModal from 'components/project/TaskModal';
 import { useKanbanPrarams, useProjectInurl, useTasksSearchParams } from 'components/project/utils';
 import React from 'react'
 import { useDocumentTitle } from 'utils'
@@ -24,8 +25,9 @@ export default function Kanban() {
       {isLoading ? <Spin size={'large'}/> : <ColumnsContainer>
       {kanbans?.map(kanban=>
         <KanbanColumns kanban={kanban} key={kanban.id} />)}
-        </ColumnsContainer>} 
         <CreateKanban/>
+        </ColumnsContainer>}
+        <TaskModal/>
     </ScreenContainer>
   )
 }
