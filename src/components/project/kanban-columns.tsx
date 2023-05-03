@@ -2,18 +2,63 @@ import React from 'react'
 import { Kanban } from 'types/kanban'
 import { useTask } from 'utils/task'
 import { useTaskTypes } from 'utils/task-type';
-import { useTasksModal, useTasksSearchParams } from './utils';
+import { useKanbanQueryKey, useTasksModal, useTasksSearchParams } from './utils';
 import taskIcon from 'assets/task.svg';
 import bugIcon from 'assets/bug.svg';
 import styled from '@emotion/styled';
-import { Card } from 'antd';
+import { Button, Card, Dropdown, Menu, Modal } from 'antd';
 import CreateTask from './CreateTask';
+import { Task } from 'types/task';
+import Mark from './Mark';
+import { useDeleteKanban } from 'utils/kanban';
+import { Row } from 'components/Lib';
+
+const TaskCard=({task}:{task:Task})=>{
+  const{startEdit}=useTasksModal();
+  const{name:keyword}=useTasksSearchParams();
+  return <Card onClick={()=>startEdit(task.id)} style={{marginBottom:'0.5rem',cursor:'pointer'}} key={task.id}>
+   <Mark name={task.name} keyword={keyword}/>
+  {/* <TaskTypeIcon id={task.typeId} /> */}
+  </Card>
+  
+
+}
+
+const More=({kanban}:{kanban:Kanban})=>{
+  const{mutateAsync}=useDeleteKanban(useKanbanQueryKey());
+  const confirmDeleteKanban=()=>{
+    Modal.confirm({
+      okText:'确定',
+      cancelText:'取消',
+      title:'确定删除看板吗？',
+      onOk(){
+        return mutateAsync({id:kanban.id})
+      }
+    })
+  }
+  const overlay = (
+    <Menu>
+      <Menu.Item>
+        <Button type={"link"} onClick={confirmDeleteKanban}>
+          删除
+        </Button>
+      </Menu.Item>
+    </Menu>
+  );
+  return (
+    <Dropdown overlay={overlay}>
+      <Button type={"link"}>...</Button>
+    </Dropdown>
+  );
+
+
+}
 
 export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
   const { data: allTasks } = useTask(useTasksSearchParams());
   const tasks = allTasks?.filter(task => task.kanbanId === kanban.id);
 
-  const{startEdit}=useTasksModal()
+ 
   //待处理svg图片问题
   // const TaskTypeIcon = ({ id }: { id: number }) => {
   //   const { data } = useTaskTypes();
@@ -25,12 +70,13 @@ export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
   // }
   return (
     <Container>
+      <Row between={true}>
       <h3>{kanban.name}</h3>
+      <More kanban={kanban} key={kanban.id}/>
+      </Row>
       <TaskContainer>
       {
-        tasks?.map(task => <Card onClick={()=>startEdit(task.id)} style={{marginBottom:'0.5rem',cursor:'pointer'}} key={task.id}>
-          {/* <TaskTypeIcon id={task.typeId} /> */}
-          <div>{task.name}</div></Card>)
+        tasks?.map(task =><TaskCard key={task.id} task={task}/> )
       }
       <CreateTask kanbanId={kanban.id}/>
       </TaskContainer>

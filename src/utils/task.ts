@@ -30,3 +30,11 @@ export const useEditTask=(queryKey:QueryKey)=>{
     client('tasks/${params.id}',{data:params,method:'PATCH'}),
     useEditConfig(queryKey))
 }
+
+//删除任务
+export const useDeleteTask=(queryKey:QueryKey)=>{
+    const client=useHttp();
+    return useMutation(({id}:{id:number})=>client('tasks/${id}',{method:'DELETE'}),
+    useEditConfig(queryKey))
+}
+
