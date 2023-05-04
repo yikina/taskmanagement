@@ -54,7 +54,10 @@ const More=({kanban}:{kanban:Kanban})=>{
 
 }
 
-export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
+export const KanbanColumns=React.forwardRef<
+HTMLDivElement,
+{ kanban: Kanban }
+>(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTask(useTasksSearchParams());
   const tasks = allTasks?.filter(task => task.kanbanId === kanban.id);
 
@@ -69,7 +72,7 @@ export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
 
   // }
   return (
-    <Container>
+    <Container {...props} ref={ref}>
       <Row between={true}>
       <h3>{kanban.name}</h3>
       <More kanban={kanban} key={kanban.id}/>
@@ -82,7 +85,7 @@ export default function KanbanColumns({ kanban }: { kanban: Kanban }) {
       </TaskContainer>
     </Container>
   )
-}
+});
 
 export const Container = styled.div`
 min-width:27rem;
