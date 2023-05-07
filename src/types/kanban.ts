@@ -3,3 +3,4 @@ export interface Kanban{
     name:string;
     projectId:number;
 }
+

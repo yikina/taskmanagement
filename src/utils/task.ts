@@ -1,7 +1,8 @@
 import { Task } from "types/task";
 import { QueryKey, useMutation, useQuery } from "@tanstack/react-query";
 import { useHttp } from "./http";
-import { useAddConfig, useEditConfig } from "./use-optimistic";
+import { useAddConfig, useEditConfig, useReorderTaskConfig } from "./use-optimistic";
+import { SortProps } from "types/SortProps";
 
 //获取任务列表
 export const useTask=(param?:Partial<Task>)=>{
@@ -37,4 +38,15 @@ export const useDeleteTask=(queryKey:QueryKey)=>{
     return useMutation(({id}:{id:number})=>client('tasks/${id}',{method:'DELETE'}),
     useEditConfig(queryKey))
 }
+
+//拖拽task持久化
+export const useReorderTask = (queryKey: QueryKey) => {
+    const client = useHttp();
+    return useMutation((params: SortProps) => {
+      return client("tasks/reorder", {
+        data: params,
+        method: "POST",
+      });
+    }, useReorderTaskConfig(queryKey));
+  };
 

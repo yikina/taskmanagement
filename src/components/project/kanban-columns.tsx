@@ -12,27 +12,28 @@ import { Task } from 'types/task';
 import Mark from './Mark';
 import { useDeleteKanban } from 'utils/kanban';
 import { Row } from 'components/Lib';
+import { Drag, Drop, DropChild } from 'components/DragAndDrop';
 
-const TaskCard=({task}:{task:Task})=>{
-  const{startEdit}=useTasksModal();
-  const{name:keyword}=useTasksSearchParams();
-  return <Card onClick={()=>startEdit(task.id)} style={{marginBottom:'0.5rem',cursor:'pointer'}} key={task.id}>
-   <Mark name={task.name} keyword={keyword}/>
-  {/* <TaskTypeIcon id={task.typeId} /> */}
+const TaskCard = ({ task }: { task: Task }) => {
+  const { startEdit } = useTasksModal();
+  const { name: keyword } = useTasksSearchParams();
+  return <Card onClick={() => startEdit(task.id)} style={{ marginBottom: '0.5rem', cursor: 'pointer' }} key={task.id}>
+    <Mark name={task.name} keyword={keyword} />
+    {/* <TaskTypeIcon id={task.typeId} /> */}
   </Card>
-  
+
 
 }
 
-const More=({kanban}:{kanban:Kanban})=>{
-  const{mutateAsync}=useDeleteKanban(useKanbanQueryKey());
-  const confirmDeleteKanban=()=>{
+const More = ({ kanban }: { kanban: Kanban }) => {
+  const { mutateAsync } = useDeleteKanban(useKanbanQueryKey());
+  const confirmDeleteKanban = () => {
     Modal.confirm({
-      okText:'确定',
-      cancelText:'取消',
-      title:'确定删除看板吗？',
-      onOk(){
-        return mutateAsync({id:kanban.id})
+      okText: '确定',
+      cancelText: '取消',
+      title: '确定删除看板吗？',
+      onOk() {
+        return mutateAsync({ id: kanban.id })
       }
     })
   }
@@ -54,14 +55,14 @@ const More=({kanban}:{kanban:Kanban})=>{
 
 }
 
-export const KanbanColumns=React.forwardRef<
-HTMLDivElement,
-{ kanban: Kanban }
+export const KanbanColumns = React.forwardRef<
+  HTMLDivElement,
+  { kanban: Kanban }
 >(({ kanban, ...props }, ref) => {
   const { data: allTasks } = useTask(useTasksSearchParams());
   const tasks = allTasks?.filter(task => task.kanbanId === kanban.id);
 
- 
+
   //待处理svg图片问题
   // const TaskTypeIcon = ({ id }: { id: number }) => {
   //   const { data } = useTaskTypes();
@@ -74,14 +75,24 @@ HTMLDivElement,
   return (
     <Container {...props} ref={ref}>
       <Row between={true}>
-      <h3>{kanban.name}</h3>
-      <More kanban={kanban} key={kanban.id}/>
+        <h3>{kanban.name}</h3>
+        <More kanban={kanban} key={kanban.id} />
       </Row>
       <TaskContainer>
-      {
-        tasks?.map(task =><TaskCard key={task.id} task={task}/> )
-      }
-      <CreateTask kanbanId={kanban.id}/>
+        <Drop type={'ROW'} direction={'vertical'} droppableId={String(kanban.id)}>
+          <DropChild style={{ minHeight: '1rem' }}>
+            {
+              tasks?.map((task, index) => (
+                <Drag key={task.id} index={index} draggableId={"task" + task.id}>
+                  <div>
+                    <TaskCard key={task.id} task={task} />
+                  </div>
+
+                </Drag>))
+            }
+          </DropChild>
+        </Drop>
+        <CreateTask kanbanId={kanban.id} />
       </TaskContainer>
     </Container>
   )
@@ -96,7 +107,7 @@ flex-direction:column;
 padding:0.7rem 0.7rem 1rem;
 margin-right:1.5rem;
 `
-export const TaskContainer=styled.div`
+export const TaskContainer = styled.div`
   overflow:scroll;
   flex:1;
   ::-webkit-scrollbar{
