@@ -9,6 +9,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import ProjectPage from 'pages/ProjectPage';
 import ProjectModal from 'components/projectList/ProjectModal';
 import ProjectPopover from 'components/projectList/ProjectPopover';
+import { UserPopover } from 'components/projectList/UserPopover';
 
 
 export const AuthenticatedApp = () => {
@@ -41,7 +42,7 @@ const PageHeader=(props:{projectButton:JSX.Element})=>{
   <HeaderLeft gap={2}>
     <ButtonNoPadding type={'link'} onClick={resetRoute}>主页</ButtonNoPadding>
     <ProjectPopover />
-      <h3>用户</h3>
+    <UserPopover/>
   </HeaderLeft>
   <HeaderRight>
   <User/>

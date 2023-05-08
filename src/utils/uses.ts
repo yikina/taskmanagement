@@ -1,18 +1,12 @@
 
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { User } from "types/User";
-import { cleanObject } from "utils";
 import { useHttp } from "./http";
-import { useAsync } from "./use-async";
 
-export const useUsers=(param?:Partial<User>)=>{
-    const client=useHttp();
-    const {run,...res}=useAsync<User[]>();
+export const useUsers = (param?: Partial<User>) => {
+  const client = useHttp();
 
-    useEffect(() => {
-        run(client("users", { data: cleanObject(param || {}) }));
-      }, [param, run, client]);
-
-    return res;
-
-}
+  return useQuery<User[]>(["users", param], () =>
+    client("users", { data: param })
+  );
+};
