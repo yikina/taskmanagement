@@ -52,3 +52,7 @@ export const useTasksModal=()=>{
     }
 
 }
+
+export const useEpicSearchParams = () => ({ projectId: useProjectidInUrl() });
+
+export const useEpicsQueryKey = () => ["epics", useEpicSearchParams()];
