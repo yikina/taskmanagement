@@ -10,14 +10,15 @@ export const useProjectidInUrl=()=>{
     const id=url.pathname.match(/projects\/(\d+)/)?.[1];
     return Number(id);
 }
-
+//通过id获取项目信息
 export const useProjectInurl=()=>useProject(useProjectidInUrl());
-
+//将 id 转为 key-value格式
 export const useKanbanPrarams=()=>({projectId:useProjectidInUrl()});
 export const useKanbanQueryKey=()=>['kanbans',useKanbanPrarams()];
 
 export const useTasksSearchParams=()=>{
     const[param,setparam]=useUrlQueryParam(['name','typeId','processorId','tagId']);
+    // 获取当前的项目id用来获取看板数据
     const projectId=useProjectidInUrl();
     const debouncedName=useDebounce(param.name,200)
     return useMemo(()=>({

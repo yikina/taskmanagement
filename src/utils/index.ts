@@ -56,10 +56,10 @@ export const resetRoute=()=>{
 
 //阻止在已卸载的组件上调用setState
 export const useMountedRef=()=>{
-    const mountedRef=useRef(false);
+    const mountedRef=useRef(false);//创建一个变量，用于记录组件是否已挂载
     useEffect(()=>{
         mountedRef.current=true
-        return ()=>{
+        return ()=>{//当组件卸载时，修改这个变量
             mountedRef.current=false;
         }
     })

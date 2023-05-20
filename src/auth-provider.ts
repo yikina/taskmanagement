@@ -2,7 +2,7 @@ import { User } from "types/User";
 
 const apiUrl=process.env.REACT_APP_API_URL;
 
-//类似功能firebase
+//在localstorage中使用token刷新后仍保持登录状态
 const localStorageKey='__auth_provider_token__';
 
 export const getToken=()=>window.localStorage.getItem(localStorageKey);

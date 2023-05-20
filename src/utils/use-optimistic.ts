@@ -6,6 +6,9 @@ import { Task } from "types/task";
 export const useConfig=(queryKey:QueryKey,callback:(target:any,old?:any[])=>any[]) =>{
     const queryClient=useQueryClient();
     return {
+      //queryClient.invalidateQueries：在提交成功/失败后重新查询更新状态
+      //queryClient.getQueryData：获取缓存的旧值
+      //queryClient.setQueryData：设置值
         onSuccess:()=>{queryClient.invalidateQueries(queryKey)},
         async onMutate(target:any){
             const previousValue=queryClient.getQueryData<Project[]>(queryKey);

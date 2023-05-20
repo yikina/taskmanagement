@@ -7,6 +7,7 @@ interface State<D>{
     data:D | null
 }
 
+//初始状态
 const defaultInitialState:State<null>
 ={
     stat:'idle',

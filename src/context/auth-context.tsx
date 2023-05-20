@@ -12,10 +12,11 @@ interface AuthForm {
     password: string;
 
 }
+//保持用户登录状态，组件一挂载就调用
 const bootstrapUser=async()=>{
     let user=null;
     const token=auth.getToken();
-    if(token){
+    if(token){//如果存在token，则发送请求获取user的信息
         const data=await http('me',{token})
         user=data.user
     }
